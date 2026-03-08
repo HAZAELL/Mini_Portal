@@ -143,6 +143,22 @@ app.patch("/solicitudes/:id/close", auth, (req,res)=>{
 
 });
 
+app.patch("/solicitudes/:id/open", auth, (req,res)=>{
+
+    if(req.user.role === "client"){
+        return res.status(403).json({error:"No permitido"});
+    }
+
+    db.run(
+        "UPDATE solicitudes SET estatus='open' WHERE id=?",
+        [req.params.id],
+        function(){
+            res.json({updated:this.changes});
+        }
+    );
+
+});
+
 app.delete("/solicitudes/:id", auth, (req,res)=>{
 
     if(req.user.role !== "admin"){

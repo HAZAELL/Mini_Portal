@@ -36,9 +36,14 @@ tabla.innerHTML+=`
 <tr>
 <td>${s.id}</td>
 <td>${s.titulo}</td>
+<td>${s.descripcion}</td>
 <td>${s.estatus}</td>
+<td>${new Date(s.createdAt).toLocaleString()}</td>
+<td>${s.ownerId}</td>
+<td>${s.accountId}</td>
 <td>
 <button onclick="cerrar(${s.id})">Cerrar</button>
+<button onclick="abrir(${s.id})">Abrir</button>
 <button onclick="eliminar(${s.id})">Eliminar</button>
 </td>
 </tr>
@@ -69,6 +74,19 @@ cargar()
 async function cerrar(id){
 
 await fetch(API+"/solicitudes/"+id+"/close",{
+method:"PATCH",
+headers:{
+Authorization:"Bearer "+localStorage.token
+}
+})
+
+cargar()
+
+}
+
+async function abrir(id){
+
+await fetch(API+"/solicitudes/"+id+"/open",{
 method:"PATCH",
 headers:{
 Authorization:"Bearer "+localStorage.token
